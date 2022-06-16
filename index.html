@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculadora</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <div class="pantalla"> 
+        <display id="dis">0</display>
+    </div>   
+    <div class="teclado">
+        <button id="7">7</button>
+        <button id="8">8</button>
+        <button id="9">9</button>
+        <button id="4">4</button>
+        <button id="5">5</button>
+        <button id="6">6</button>
+        <button id="1">1</button>
+        <button id="2">2</button>
+        <button id="3">3</button>
+        <button id="0">0</button>
+        <button id="." class="operador">.</button>
+        <button id="+" class="operador">+</button>
+        <button id="-" class="operador">-</button>
+        <button id="*" class="operador">*</button>
+        <button id="/" class="operador">/</button>
+        <button value="clear" class="operador">clear</button>
+        <button id="=" class="operador">=</button>
+        <div class="footer">
+            <a href="https://github.com/Walkeruru">Walkeruru
+            <img id="git" src="https://daeb.co.uk/assets/images/github.png" alt="github logo"></a>
+          </div>
+    </div>
+    </body>
+    <script>
+        //a y b siendo numeros
+        function suma(a,b){
+             let sum=(a*10+b*10)/10;
+            return sum;
+        }
+        function resta(a,b){
+            return a-b;
+        }
+        function multiplicar(a,b){
+            return a*b;
+        }
+        function dividir(a,b){
+            if(b!=0){
+                return a/b;}
+                else return "ERROR"
+        }
+        function operate(a,operador,b){
+            if(operador== "+"){
+                return suma(a,b);
+            }
+            else if(operador=="-"){
+                return resta(a,b);
+            }
+            else if(operador=="*"){
+                return multiplicar(a,b);
+            }
+            else return dividir(a,b);
+        }
+        let a;
+        let b;
+        let resultado=0;
+        let mC=0;
+        let aplus;
+
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach((button) => {
+        button.addEventListener('click',() => {
+            let text = document.getElementById("dis");
+            //restart luego de calcular una vez
+            if(resultado!="0" || button.value=="clear"){
+                text.textContent="0";
+                resultado=0;
+                a=undefined;
+                b=undefined;
+                mC=0
+            }
+            //escribe los numeros
+            if(text.textContent=="0"){
+                text.textContent =`${button.id}`;
+            }
+            else if(mC==text.textContent){
+                text.textContent=""
+                text.textContent= text.textContent+`${button.id}`;
+                mC=0;
+            }
+            else{
+                text.textContent= text.textContent+`${button.id}`;
+                mC=0;
+            }
+            if((button.id=="+" || button.id=="-" || button.id=="/" || button.id=="*") && a!==undefined){
+                b=text.textContent;
+                b=b.toString().slice(0,-1);
+                text.textContent=operate(Number(a),operador,Number(b));
+                operador=`${button.id}`;
+                mC=text.textContent;
+            }
+            
+            if((button.id=="+" || button.id=="-" || button.id=="/" || button.id=="*") && a==undefined){
+                a=text.textContent;
+                a=a.toString().slice(0,-1);
+                text.textContent="0";
+                operador=`${button.id}`;
+            }
+            
+            if(button.id=="=" && a!==undefined){
+                b=text.textContent;
+                b=b.toString().slice(0,-1);
+                resultado=text.textContent=operate(Number(a),operador,Number(b));
+                mC=resultado;
+             if(resultado>-0.99 && resultado<0.09){
+                    resultado=text.textContent=operate(Number(a),operador,Number(b)).toFixed(4)
+                }
+            }
+            if(mC!=0){
+                a=mC;
+            }
+            if(button.id=="="){
+                resultado=text.textContent=text.textContent;
+            }
+});
+})
+    </script>
+</html>
